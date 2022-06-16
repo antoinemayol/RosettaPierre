@@ -1,5 +1,5 @@
 from tkinter import *
-
+import scrapper
 '''
 master = Tk()
 
@@ -84,28 +84,33 @@ class Interface():
 
         canvas_image_title.pack()
 
-    def hide_login(self):
-        self.frame_login.pack_forget()
+
 
     def login_page(self):
+
+        def hide_login():
+            self.frame_login.pack_forget()
+
+        def start_login():
+            self.myNav = scrapper.Bot(entry_email.get(), entry_password.get())
 
         self.frame_login = Frame(self.root, bg=self.color_main_bg)
 
         #Entry part
         frame_entry = Frame(self.frame_login, bg=self.color_main_bg)
 
-        label_username = Label(frame_entry,text='username', bg=self.color_main_bg, fg='white')
-        label_username.pack()
-        entry_username = Entry(frame_entry, bg=self.color_main_bg, fg='white')
-        entry_username.pack()
+        label_email = Label(frame_entry,text='email', bg=self.color_main_bg, fg='white')
+        label_email.pack()
+        entry_email = Entry(frame_entry, bg=self.color_main_bg, fg='white')
+        entry_email.pack()
 
         label_password = Label(frame_entry, text='password', bg=self.color_main_bg, fg='white')
         label_password.pack()
-        entry_password = Entry(frame_entry, bg=self.color_main_bg, fg='white')
+        entry_password = Entry(frame_entry, bg=self.color_main_bg, fg='white', show='*')
         entry_password.pack()
 
-        button_login = Button(frame_entry, text='   Login   ', bg='#3498db', fg='white', bd=0, relief=FLAT, command=self.hide_login)
-        button_login.pack()
+        button_start = Button(frame_entry, text='   Strart   ', bg='#3498db', fg='white', bd=0, relief=FLAT, command=start_login)
+        button_start.pack()
 
         frame_entry.grid(row=1, column=0)
 
@@ -115,10 +120,18 @@ class Interface():
         title_bar = Frame(self.root, bg=self.color_main_bg)
         title_bar.pack(fill=X)
 
+        def get_pos(event):
+            global xwin
+            global ywin
+
+            xwin = event.x
+            ywin = event.y
+
         def move_app(e):
-            self.root.geometry(f'+{e.x_root}+{e.y_root}')
+            self.root.geometry(f'+{e.x_root - xwin}+{e.y_root - ywin}')
 
         title_bar.bind("<B1-Motion>", move_app)
+        title_bar.bind("<Button-1>", get_pos)
 
         def keep_flat(e):
             if e.widget is button_close:

@@ -58,6 +58,7 @@ class Bot():
 
         self.wait = webdriver.support.ui.WebDriverWait(self.driver, 999)
         self.wait_for_correct_current_url(self.rosetta_link_launchpad)
+        self.wait_for_correct_current_url(self.rosetta_link_launchpad)
 
     def DoLesson(self):
 
